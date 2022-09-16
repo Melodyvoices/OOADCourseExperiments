@@ -1,4 +1,4 @@
-package cn.edu.scau.pos220.domain;
+package cn.edu.scau.pos220.core.domain;
 
 import org.springframework.stereotype.Component;
 
@@ -12,20 +12,30 @@ import java.io.Serializable;
 public class Category implements Serializable {
     private Long categoryId;
     private String categoryName;
-    public Category(){}
+
+    public Category() {
+    }
+
+    public Category(long categoryId, String categoryName) {
+        this.categoryId=categoryId;
+        this.categoryName=categoryName;
+    }
 
     //setter n getter
     public Long getCategoryId() {
         return categoryId;
     }
-    public void setCategoryId(Long categoryId){
-        this.categoryId=categoryId;
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
-    public String getCategoryName(){
+
+    public String getCategoryName() {
         return categoryName;
     }
-    public void setCategoryName(String categoryName){
-        this.categoryName=categoryName;
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     //test console

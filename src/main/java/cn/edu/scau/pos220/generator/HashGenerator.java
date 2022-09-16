@@ -7,30 +7,31 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashGenerator {
-    HashGenerator(){}
+    HashGenerator() {
+    }
 
     private String str;
-    HashGenerator(String str){
-        this.str=str;
+
+    HashGenerator(String str) {
+        this.str = str;
     }
-    public String getMD5(){
+
+    public String getMD5() {
         return generatorMD5().toUpperCase();
     }
-    private String generatorMD5(){
+
+    private String generatorMD5() {
         byte[] msg = str.getBytes();
 
-        byte [] hash = null;
-        try
-        {
+        byte[] hash = null;
+        try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             hash = md.digest(msg);
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         StringBuilder strBuilder = new StringBuilder();
-        for(byte b:hash)
-        {
+        for (byte b : hash) {
             strBuilder.append(String.format("%02x", b));
         }
         String strHash = strBuilder.toString();
