@@ -1,28 +1,38 @@
 package cn.edu.scau.pos220.controller;
 
+import cn.edu.scau.pos220.core.constants.HttpStatus;
+import cn.edu.scau.pos220.core.domain.AjaxResult;
 import cn.edu.scau.pos220.core.domain.ProductDescription;
-import cn.edu.scau.pos220.service.impl.ProductServiceImpl;
+import cn.edu.scau.pos220.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("product")
 public class ProductController {
     @Autowired
-    private ProductDescription productDescription;
+    private IProductService productService;
 
     @GetMapping("/{productSn}")
-    public ProductDescription getById(@PathVariable("productSn") Long productSn) {
-        productDescription= new ProductServiceImpl().getProductBySn(productSn.toString());
-        return productDescription;
+    public AjaxResult getBySn(@PathVariable("productSn") String productSn) {
+        try {
+            ProductDescription p = productService.getProductBySn(productSn);
+            if (p == null) {
+                return AjaxResult.error(HttpStatus.BAD_REQUEST.value(),"未查询到相关信息");
+            }
+            else {
+                return AjaxResult.success(productService.getProductBySn(productSn));
+            }
+        } catch (Exception e) {
+            return AjaxResult.error(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
     }
+
     @GetMapping("/all")
-    public List<ProductDescription> getAllProducts(){
-        return new ProductServiceImpl().getAllProducts();
+    public AjaxResult listAll() {
+        return AjaxResult.success(productService.getAllProducts());
     }
 }

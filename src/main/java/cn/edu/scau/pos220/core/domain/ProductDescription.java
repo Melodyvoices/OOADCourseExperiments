@@ -27,9 +27,6 @@ public class ProductDescription {
         this.price = price;
     }
 
-    public ProductDescription(long productId, String productSn, Category category, String productName, BigDecimal price) {
-
-    }
 
     //setter n getter
     public Long getProductId() {

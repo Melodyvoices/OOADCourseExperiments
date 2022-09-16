@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public List<Category> listAllCategories() {
+    public List<Category> getAllCategories() {
         return productCatalog.listAllCategories();
     }
 }

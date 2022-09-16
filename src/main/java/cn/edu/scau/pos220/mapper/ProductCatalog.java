@@ -3,13 +3,14 @@ package cn.edu.scau.pos220.mapper;
 import cn.edu.scau.pos220.core.domain.Category;
 import cn.edu.scau.pos220.core.domain.ProductDescription;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Component
+@Repository
 public class ProductCatalog {
     private final HashMap<String, ProductDescription> products = new HashMap<>();
     private final HashMap<String, Category> categories = new HashMap<>();
@@ -31,6 +32,7 @@ public class ProductCatalog {
         products.put(product4.getProductSn(), product4);
         products.put(product5.getProductSn(), product5);
         products.put(product6.getProductSn(), product6);
+        //System.out.println(products);
     }
 
     public ProductDescription getProductBySn(String productSn) {
