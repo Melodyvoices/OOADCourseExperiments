@@ -6,6 +6,7 @@ import cn.edu.scau.pos220.core.domain.AjaxResult;
 import cn.edu.scau.pos220.core.domain.Category;
 import cn.edu.scau.pos220.core.domain.ProductDescription;
 import cn.edu.scau.pos220.service.ICategoryService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ public class CategoryController {
     private ICategoryService categoryService;
 
     @GetMapping("/{categoryId}")
+    @ApiOperation("get the category's information by its id")
     public AjaxResult getBySn(@PathVariable("categoryId") String categoryId) {
         Long id;
         try {
@@ -40,6 +42,7 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
+    @ApiOperation("get all categories' information")
     public AjaxResult listAll() {
         return AjaxResult.success(categoryService.getAllCategories());
     }

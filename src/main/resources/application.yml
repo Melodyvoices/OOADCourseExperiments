@@ -1,0 +1,11 @@
+server:
+  port: 8848
+
+spring:
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+  devtools:
+    restart:
+      enabled: false
+
