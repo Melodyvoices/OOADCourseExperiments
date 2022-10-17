@@ -9,6 +9,11 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
+/**
+ * Mock
+ */
+// require('./mock/index');
+
 new Vue({
   router,
   store,
