@@ -1,52 +1,75 @@
 <template>
-  <!-- template中只允许有一对<div>标签，其他标签需要在这一对里面 -->
-  <div>
+  <div class="about">
+    <!-- 插值语法 -->
+    <h1>父组件</h1>
+    <input v-model="info" />
+    <h4>收到子组件1传递数据为: {{ childMsg }}</h4>
+    <input v-model="value" />
+    <br />
+    <h4>收到子组件2修改的数据为: {{ value }}</h4>
     <el-row>
-      <el-col :span="8">
-        <span>调用后端接口</span>
+      <el-col :span="12">
+        <hello-son :msg="info" @out="receiveMsgFromChild"></hello-son>
       </el-col>
-      <el-col :span="8">
-        <!-- 加入Element UI 输入框 显示后端文本Hello SpringBoot -->
-        <el-input v-model="info" class="input-text"></el-input>
-      </el-col>
-      <el-col :span="8">
-         <!-- 加入Element UI 按钮 -->
-        <el-button type="primary" @click="getInfo">点击按钮读取</el-button>
+      <el-col :span="12">
+        <hello-child v-model="value"></hello-child>
       </el-col>
     </el-row>
-  </div> 
+    <el-row>
+      <el-col>
+        323232
+        <product-image-information :products="products"></product-image-information>
+      </el-col>
+    </el-row>
+  </div>
 </template>
-
 <script>
-// 导入api接口，即about.js中的hello
-import { hello } from "@/api/about";
+import HelloSon from "@/components/HelloSon.vue";
+import HelloChild from "@/components/HelloChild.vue";
+import ProductImageInformation from "@/details/ProductImageInformation.vue";
 export default {
-  name: 'AboutView',
+  name: "AboutView",
+  components: {
+    HelloSon,
+    HelloChild,
+    ProductImageInformation,
+  },
   data() {
     return {
-      // 定义一个变量info
-      info: "This is an about page",
+      info: "TO子组件1: 在做什么？",
+      childMsg: "",
+      value: "TO子组件2: 天气很好",
+      products: [
+        {
+          src: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+          productName: "红颈小鸟",
+          price: "82.50",
+          url: "/about",
+        },
+        {
+          src: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+          productName: "美丽的红颈小鸟",
+          price: "820.50",
+          url: "/about",
+        },
+        {
+          src: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+          productName: "韭菜畅享至尊版红颈小鸟Pro plus",
+          price: "8820.50",
+          url: "/about",
+        },
+      ],
     };
   },
-  //vue生命周期钩子函数。vue实例被创建时调用
-  created() {
-    // this.getInfo();
-  },
-  // 所有的方法都写在methods中。
   methods: {
-    getInfo() {
-      hello().then((response) => {
-        // 查看后端json数据，"Hello SpringBoot" 是在response.data.data中;
-        // 但因为request.js将response = response.data，所以此处只需要写response.data;
-        this.info = response.data;  
-      });
+    receiveMsgFromChild(value) {
+      this.childMsg = value;
     },
   },
 };
 </script>
-
-<style scoped lang="scss">
-  .input-text {
-    font-size: 24px;
-  }
+<style scoped>
+.about {
+  background-color: antiquewhite;
+}
 </style>
