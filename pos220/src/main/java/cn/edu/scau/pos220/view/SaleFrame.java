@@ -1,7 +1,7 @@
 package cn.edu.scau.pos220.view;
 
 import cn.edu.scau.pos220.controller.Register;
-import cn.edu.scau.pos220.vo.SaleItemVo;
+import cn.edu.scau.pos220.view.vo.SaleItemVo;
 import org.springframework.stereotype.Component;
 
 import java.awt.BorderLayout;
@@ -23,7 +23,8 @@ import javax.swing.table.JTableHeader;
  * 仅供OOAD课程测试使用
  */
 
-@Component
+//disable sale frame
+//@Component
 public class SaleFrame extends JFrame implements ActionListener {
     private final Register register;
 

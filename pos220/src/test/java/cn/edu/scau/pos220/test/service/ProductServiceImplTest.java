@@ -1,6 +1,6 @@
 package cn.edu.scau.pos220.test.service;
 
-import cn.edu.scau.pos220.core.domain.ProductDescription;
+import cn.edu.scau.pos220.domain.ProductDescription;
 import cn.edu.scau.pos220.service.IProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

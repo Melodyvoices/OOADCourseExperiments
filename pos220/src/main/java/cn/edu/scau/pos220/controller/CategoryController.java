@@ -3,8 +3,7 @@ package cn.edu.scau.pos220.controller;
 
 import cn.edu.scau.pos220.core.constants.HttpStatus;
 import cn.edu.scau.pos220.core.domain.AjaxResult;
-import cn.edu.scau.pos220.core.domain.Category;
-import cn.edu.scau.pos220.core.domain.ProductDescription;
+import cn.edu.scau.pos220.domain.Category;
 import cn.edu.scau.pos220.service.ICategoryService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

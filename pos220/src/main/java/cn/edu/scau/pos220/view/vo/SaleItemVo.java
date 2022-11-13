@@ -1,4 +1,4 @@
-package cn.edu.scau.pos220.vo;
+package cn.edu.scau.pos220.view.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

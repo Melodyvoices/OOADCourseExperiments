@@ -1,7 +1,7 @@
 package cn.edu.scau.pos220.service;
 
 
-import cn.edu.scau.pos220.core.domain.ProductDescription;
+import cn.edu.scau.pos220.domain.ProductDescription;
 
 import java.math.BigDecimal;
 

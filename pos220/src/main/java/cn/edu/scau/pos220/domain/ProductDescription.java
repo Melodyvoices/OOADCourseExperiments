@@ -1,6 +1,6 @@
-package cn.edu.scau.pos220.core.domain;
+package cn.edu.scau.pos220.domain;
 
-import org.springframework.stereotype.Component;
+import cn.edu.scau.pos220.core.domain.BaseEntity;
 
 import java.math.BigDecimal;
 
@@ -8,16 +8,8 @@ import java.math.BigDecimal;
  * product description
  * POJO class
  */
-@Component
-public class ProductDescription {
-    public ProductDescription() {
-    }
-
-    private Long productId;
-    private String productSn;
-    private Category category;
-    private String productName;
-    private BigDecimal price;
+public class ProductDescription extends BaseEntity {
+    public ProductDescription(){}
 
     public ProductDescription(Long productId, String productSn, Category category, String productName, BigDecimal price) {
         this.productId = productId;
@@ -27,8 +19,17 @@ public class ProductDescription {
         this.price = price;
     }
 
+    private Long productId;
 
-    //setter n getter
+    private String productSn;
+
+    private Long categoryId;
+    private Category category;
+
+    private String productName;
+
+    private BigDecimal price;
+
     public Long getProductId() {
         return productId;
     }
@@ -43,6 +44,14 @@ public class ProductDescription {
 
     public void setProductSn(String productSn) {
         this.productSn = productSn;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Category getCategory() {
@@ -69,15 +78,14 @@ public class ProductDescription {
         this.price = price;
     }
 
-    //test console
     @Override
     public String toString() {
-        return "Category{" +
+        return "ProductDescription{" +
                 "productId=" + productId +
-                ", productName='" + productName + '\'' +
                 ", productSn='" + productSn + '\'' +
-                "price=" + price +
-                "category=" + category +
+                ", category=" + category +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
                 '}';
     }
 }

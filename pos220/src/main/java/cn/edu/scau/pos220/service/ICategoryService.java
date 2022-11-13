@@ -1,6 +1,6 @@
 package cn.edu.scau.pos220.service;
 
-import cn.edu.scau.pos220.core.domain.Category;
+import cn.edu.scau.pos220.domain.Category;
 
 import java.util.List;
 

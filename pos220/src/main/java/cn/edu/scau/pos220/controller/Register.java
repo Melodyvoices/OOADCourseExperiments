@@ -1,9 +1,9 @@
 package cn.edu.scau.pos220.controller;
 
-import cn.edu.scau.pos220.core.domain.ProductDescription;
+import cn.edu.scau.pos220.domain.ProductDescription;
 import cn.edu.scau.pos220.mapper.ProductCatalog;
 import cn.edu.scau.pos220.service.ISaleService;
-import cn.edu.scau.pos220.vo.SaleItemVo;
+import cn.edu.scau.pos220.view.vo.SaleItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

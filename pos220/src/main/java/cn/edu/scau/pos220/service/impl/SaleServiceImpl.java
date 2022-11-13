@@ -1,9 +1,9 @@
 package cn.edu.scau.pos220.service.impl;
 
-import cn.edu.scau.pos220.core.domain.Payment;
-import cn.edu.scau.pos220.core.domain.ProductDescription;
-import cn.edu.scau.pos220.core.domain.Sale;
-import cn.edu.scau.pos220.core.domain.SaleItem;
+import cn.edu.scau.pos220.domain.Payment;
+import cn.edu.scau.pos220.domain.ProductDescription;
+import cn.edu.scau.pos220.domain.Sale;
+import cn.edu.scau.pos220.domain.SaleItem;
 import cn.edu.scau.pos220.service.ISaleService;
 import org.springframework.stereotype.Service;
 

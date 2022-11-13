@@ -1,8 +1,7 @@
 package cn.edu.scau.pos220.mapper;
 
-import cn.edu.scau.pos220.core.domain.Category;
-import cn.edu.scau.pos220.core.domain.ProductDescription;
-import org.springframework.stereotype.Component;
+import cn.edu.scau.pos220.domain.Category;
+import cn.edu.scau.pos220.domain.ProductDescription;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;

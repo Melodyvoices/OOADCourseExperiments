@@ -1,6 +1,7 @@
 server:
   # 端口号
   port: 8848
+
 # 修改SpringMvc pathmatch策略，避免swagger报错
 spring:
   mvc:
@@ -20,8 +21,12 @@ spring:
   devtools:
     restart:
       enabled: false
+
 #mybatis配置
 mybatis:
   configuration:
     #下划线至驼峰映射
     map-underscore-to-camel-case: true
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  type-aliases-package: cn.edu.scau.pos220.domain
+  mapper-locations: classpath*:mapper/*Mapper.xml

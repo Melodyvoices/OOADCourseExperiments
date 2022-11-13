@@ -1,4 +1,4 @@
-package cn.edu.scau.pos220.core.domain;
+package cn.edu.scau.pos220.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

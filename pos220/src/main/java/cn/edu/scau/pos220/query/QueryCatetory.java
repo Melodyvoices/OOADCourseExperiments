@@ -1,6 +1,6 @@
 package cn.edu.scau.pos220.query;
 
-import cn.edu.scau.pos220.core.domain.Category;
+import cn.edu.scau.pos220.domain.Category;
 
 public class QueryCatetory {
     public QueryCatetory() {
