@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.pos220.mapper.CategoryMapper">
+    <resultMap type="Category" id="categoryResultMap">
+        <id property="categoryId" column="category_id"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="getCategoryById" parameterType="Long" resultMap="categoryResultMap">
+        SELECT c.category_id,
+               c.category_name,
+               c.create_time
+        FROM pos_category c
+        WHERE c.category_id = #{categoryId}
+    </select>
+
+    <select id="listAllCategory" resultMap="categoryResultMap">
+        SELECT c.category_id,
+               c.category_name,
+               c.create_time
+        FROM pos_category c
+    </select>
+
+    <select id="selectCategoryList" parameterType="Category" resultMap="categoryResultMap">
+        SELECT c.category_id,c.category_name,c.create_time
+        FROM pos_category c
+        <where>
+            <if test="categoryId != null  and categoryId != ''">and c.category_id = #{categoryId}</if>
+            <if test="categoryName != null  and categoryName != ''">and c.category_name like concat('%', #{categoryName},
+                '%')
+            </if>
+        </where>
+        ORDER BY c.category_id ASC
+    </select>
+
+    <insert id="insertCategory" parameterType="Category" useGeneratedKeys="true" keyProperty="categoryId">
+        insert into pos_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">category_id,</if>
+            <if test="categoryName != null">category_name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="categoryName != null">#{categoryName},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    <!--  修改产品  -->
+    <update id="updateCategory" parameterType="Category">
+        update pos_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="categoryName != null">category_name = #{categoryName},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where category_id = #{categoryId}
+    </update>
+    <!--  删除产品  -->
+    <delete id="deleteCategoryById" parameterType="Long">
+        delete
+        from pos_category
+        where category_id = #{categoryId}
+    </delete>
+</mapper>

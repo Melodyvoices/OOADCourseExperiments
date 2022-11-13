@@ -7,9 +7,15 @@ import java.util.List;
 
 
 public interface CategoryMapper {
-    @Select("SELECT category_id,category_name FROM pos_category WHERE category_id = #{categoryId}")
     public Category getCategoryById(Long categoryId);
 
-    @Select("SELECT category_id,category_name FROM pos_category")
     public List<Category> listAllCategory();
+
+    public List<Category> selectCategoryList(Category category);
+
+    public int insertCategory(Category category);
+
+    public int updateCategory(Category category);
+
+    public int deleteCategoryById(Long categoryId);
 }

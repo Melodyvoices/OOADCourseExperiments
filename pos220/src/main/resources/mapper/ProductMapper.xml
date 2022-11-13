@@ -21,7 +21,7 @@
         <result property="categoryName" column="category_name"/>
     </resultMap>
 
-    <select id="getProductBySn" parameterType="String" resultMap="productResultMap">
+    <select id="getCategoryById" parameterType="String" resultMap="productResultMap">
         SELECT p.product_id,
                p.product_sn,
                p.product_name,
