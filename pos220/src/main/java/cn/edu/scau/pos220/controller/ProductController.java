@@ -64,7 +64,8 @@ public class ProductController {
         return rows > 0 ? AjaxResult.success("删除产品成功") : AjaxResult.error("删除产品失败");
     }
 
-    @PostMapping("/page")
+    //restful style use "get" to receive data
+    @GetMapping("/page")
     @ApiOperation("分页查询")
     public AjaxResult page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, ProductDescription product) {
         PageHelper.startPage(pageNum, pageSize);

@@ -42,8 +42,13 @@ const routes = [
       name: 'category',
       component: () => import('@/views/Category.vue'),
       meta: { title: '类别', access: 0, affix: true }
-    }
-   ]
+    },
+    {
+      path: '/product/item',
+      name: 'product',
+      component: () => import('@/views/Product.vue'),
+      meta: { title: '产品', access: 0, affix: true }
+    }]
   }
 ]
 const router = new VueRouter({

@@ -1,141 +1,232 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-row :gutter="20">
-      <el-table :data="productList" style="width: 100%">
-        <el-table-column
-          prop="productId"
-          label="产品编号"
-          align="center"
-          width="100"
-        ></el-table-column>
-        <el-table-column
-          prop="productName"
-          label="产品名称"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="category.categoryName"
-          label="类别名称"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="price"
-          label="产品单价"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="创建日期"
-          width="200"
-          align="center"
-        ></el-table-column>
-      </el-table>
+      <el-col :span="24" :xs="24">
+        <!-- 搜索表单 -->
+        <el-form
+          :model="queryParams"
+          ref="queryForm"
+          :inline="true"
+          label-width="68px"
+        >
+          <el-form-item label="编号" prop="productSn">
+            <el-input
+              v-model="queryParams.productSn"
+              placeholder="请输入产品编号"
+              clearable
+              size="small"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item label="名称" prop="productName">
+            <el-input
+              v-model="queryParams.productName"
+              placeholder="请输入产品名称"
+              clearable
+              size="small"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item label="类别" prop="categoryId">
+            <el-select v-model="queryParams.categoryId" placeholder="请选择">
+              <el-option
+                v-for="item in categoryOptions"
+                :key="item.categoryId"
+                :label="item.categoryName"
+                :value="item.categoryId"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="mini"
+              @click="handleQuery"
+              >搜索</el-button
+            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+              >重置</el-button
+            >
+          </el-form-item>
+        </el-form>
+
+        <!-- 数据操作按钮 -->
+        <el-row :gutter="10">
+          <el-col :span="1.5">
+            <el-button type="primary" icon="el-icon-plus" size="small"
+              >新增</el-button
+            >
+          </el-col>
+          <el-col :span="1.5">
+            <el-button type="success" icon="el-icon-edit" size="small"
+              >修改</el-button
+            >
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="small"
+              :disabled="single"
+              @click="handleDelete"
+              >删除</el-button
+            >
+          </el-col>
+        </el-row>
+
+        <!-- 数据展示Table -->
+        <el-table
+          v-loading="loading"
+          :data="dataList"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="50" align="center" />
+          <el-table-column
+            label="ID"
+            align="center"
+            prop="productId"
+            width="55"
+          />
+          <el-table-column label="编号" align="center" prop="productSn" />
+          <el-table-column label="名称" align="center" prop="productName" />
+          <el-table-column label="价格" align="center" prop="price" />
+          <el-table-column
+            label="类别"
+            align="center"
+            prop="category.categoryName"
+          />
+          <el-table-column
+            label="操作"
+            align="center"
+            class-name="small-padding fixed-width"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                type="text"
+                icon="el-icon-edit"
+                @click="handleUpdate(scope.row)"
+                >修改</el-button
+              >
+              <el-button
+                size="small"
+                type="text"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.row)"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- 分页加载 -->
+        <el-pagination> </el-pagination>
+      </el-col>
     </el-row>
 
-    <el-button
-      type="primary"
-      v-if="!dialogVisible"
-      @click="dialogVisible = true"
-      >点击打开 Dialog</el-button
-    >
-    <el-dialog
-      title="产品表单"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="产品名称" prop="productName">
-          <el-input v-model="form.productName"></el-input>
-        </el-form-item>
-        <el-form-item label="选择产品" prop="productId">
-          <el-select v-model="form.productId" placeholder="请选择">
-            <el-option
-              v-for="item in productList"
-              :key="item.productId"
-              :label="item.productName"
-              :value="item.productId"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
-          <el-date-picker
-            v-model="form.createTime"
-            type="date"
-            placeholder="选择日期"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">停用</el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('form')">确 定</el-button>
-      </span>
-    </el-dialog>
+    <!-- 新增/修改对话框 默认不显示 -->
+    <el-dialog> </el-dialog>
   </div>
 </template>
 
 <script>
-import { listAll } from "@/api/product";
-
+import { listProductByPage, delProduct } from "@/api/product";
+import { listAll } from "@/api/category";
 export default {
-  name: "product",
+  name: "Product",
+  // 定义属性
   data() {
     return {
-      productList: [],
-      dialogVisible: false,
-      form: {
-        productName: "",
-        productId: "",
-        createTime: "",
-        status: "",
+      // 遮罩层
+      loading: false,
+      // 表格数据
+      dataList: [],
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        productSn: null,
+        productName: null,
+        categoryId: null,
       },
-      rules: {
-        productName: [
-          { required: true, message: "请输入产品名称", trigger: "blur" },
-          { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" },
-        ],
-        productId: [
-          { required: true, message: "请选择产品ID", trigger: "change" },
-        ],
-      },
+      // 下拉框选项数据
+      categoryOptions: [],
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
     };
   },
-  methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$alert(this.form);
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    getproductList() {
-      listAll().then((response) => {
-        this.productList = response.data;
-      });
-    },
-  },
+  // 计算属性，可选
+  computed: {},
+  // 监控data变化，可选
+  watch: {},
+  // 生命周期-创建完成，可选
   created() {
-    this.getproductList();
+    this.getList();
+    this.getCategoryOptions();
+  },
+  // 生命周期-挂载完成，可选
+  mounted() {},
+
+  // 方法集合
+  methods: {
+    /** 查询数据列表 */
+    getList() {
+      this.loading = true;
+      // 结果赋值this.dataList
+      listProductByPage(this.queryParams).then((response) => {
+        this.dataList = response.data.list;
+        this.loading = false;
+      });
+    },
+    /** 查询下拉列表选型 */
+    getCategoryOptions() {
+      // 访问后端接口，查外键所有对象
+      // 结果赋值this.categoryOptions
+      listAll().then((response) => {
+        this.categoryOptions = response.data;
+      });
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.$refs.queryForm.resetFields();
+      this.getList();
+    },
+    /** 修改按钮操作 */
+    handleUpdate(row) {},
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const productId = row.productId || this.ids;
+      this.$confirm('是否确认删除ID为"' + productId + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(function () {
+          return delProduct(productId);
+        })
+        .then(() => {
+          this.getList(); // 刷新数据
+          this.$message.success("删除成功");
+        })
+        .catch(() => {});
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map((item) => item.productId);
+      this.single = selection.length !== 1;
+    },
   },
 };
 </script>
+
+<style scoped lang="scss">
+</style>
