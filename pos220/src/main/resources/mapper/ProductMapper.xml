@@ -116,4 +116,11 @@
         from pos_product
         where product_id = #{productId}
     </delete>
+<!--    delete any products-->
+    <delete id="deleteProductsByIds" parameterType="String">
+        DELETE FROM pos_product WHERE product_id IN
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
 </mapper>

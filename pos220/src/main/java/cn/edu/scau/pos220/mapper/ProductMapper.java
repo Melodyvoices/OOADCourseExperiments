@@ -18,4 +18,6 @@ public interface ProductMapper {
     public int updateProduct(ProductDescription productDescription);
 
     public int deleteProductById(Long productId);
+
+    int deleteProductsByIds(Long[] productIds);
 }

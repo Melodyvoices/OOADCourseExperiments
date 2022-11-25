@@ -64,6 +64,13 @@ public class ProductController {
         return rows > 0 ? AjaxResult.success("删除产品成功") : AjaxResult.error("删除产品失败");
     }
 
+//    @DeleteMapping("/{productId}")
+//    @ApiOperation("删除产品")
+//    public AjaxResult removeAny(@PathVariable Long [] productIds) {
+//        int rows = productService.deleteProductsByIds(productIds);
+//        return rows > 0? AjaxResult.success("删除产品成功") : AjaxResult.error("删除产品失败");
+//    }
+
     //restful style use "get" to receive data
     @GetMapping("/page")
     @ApiOperation("分页查询")
@@ -75,4 +82,5 @@ public class ProductController {
         // PageInfo<ProductDescription> pageInfo = new PageInfo<>(list)
         return AjaxResult.success(pageInfo);
     }
+
 }

@@ -14,3 +14,28 @@ export function delProduct(productId) {
     method: 'delete'
   })
 }
+// 查询产品详细
+export function getProduct(productId) {
+  return request({
+    url: '/product/' + productId,
+    method: 'get'
+  })
+}
+
+// 新增产品
+export function addProduct(data) {
+  return request({
+    url: '/product',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改产品
+export function updateProduct(data) {
+  return request({
+    url: '/product',
+    method: 'put',
+    data: data
+  })
+}

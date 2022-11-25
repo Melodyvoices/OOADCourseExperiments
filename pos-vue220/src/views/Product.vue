@@ -54,12 +54,21 @@
         <!-- 数据操作按钮 -->
         <el-row :gutter="10">
           <el-col :span="1.5">
-            <el-button type="primary" icon="el-icon-plus" size="small"
+            <el-button
+              type="primary"
+              icon="el-icon-plus"
+              size="small"
+              @click="handleAdd"
               >新增</el-button
             >
           </el-col>
           <el-col :span="1.5">
-            <el-button type="success" icon="el-icon-edit" size="small"
+            <el-button
+              type="success"
+              icon="el-icon-edit"
+              size="small"
+              :disabled="single"
+              @click="handleUpdate"
               >修改</el-button
             >
           </el-col>
@@ -121,17 +130,58 @@
         </el-table>
 
         <!-- 分页加载 -->
-        <el-pagination> </el-pagination>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryParams.pageNum"
+          :page-sizes="[5, 10, 20, 50]"
+          :page-size="queryParams.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        >
+        </el-pagination>
       </el-col>
     </el-row>
 
     <!-- 新增/修改对话框 默认不显示 -->
-    <el-dialog> </el-dialog>
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="编号" prop="productSn">
+          <el-input v-model="form.productSn" placeholder="请输入编号" />
+        </el-form-item>
+        <el-form-item label="名称" prop="productName">
+          <el-input v-model="form.productName" placeholder="请输入名称" />
+        </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="form.price" placeholder="价格" />
+        </el-form-item>
+        <el-form-item label="类别" prop="categoryId">
+          <el-select v-model="form.categoryId" placeholder="请选择">
+            <el-option
+              v-for="item in categoryOptions"
+              :key="item.categoryId"
+              :label="item.categoryName"
+              :value="item.categoryId"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listProductByPage, delProduct } from "@/api/product";
+import {
+  listProductByPage,
+  delProduct,
+  addProduct,
+  getProduct,
+  updateProduct,
+} from "@/api/product";
 import { listAll } from "@/api/category";
 export default {
   name: "Product",
@@ -145,7 +195,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 5,
         productSn: null,
         productName: null,
         categoryId: null,
@@ -156,6 +206,25 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
+      // 勾选1个或多个
+      multiple: true,
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
+      // 表单
+      form: {},
+      // 表单校验
+      rules: {
+        productSn: [
+          { required: true, message: "编号不能为空", trigger: "blur" },
+        ],
+        productName: [
+          { required: true, message: "名称不能为空", trigger: "blur" },
+        ],
+      },
+      // 总条数
+      total: 0,
     };
   },
   // 计算属性，可选
@@ -178,6 +247,7 @@ export default {
       // 结果赋值this.dataList
       listProductByPage(this.queryParams).then((response) => {
         this.dataList = response.data.list;
+        this.total = response.data.total;
         this.loading = false;
       });
     },
@@ -200,8 +270,59 @@ export default {
       this.$refs.queryForm.resetFields();
       this.getList();
     },
+    /** 表单初始化 */
+    resetForm() {
+      // 可进行数据初始化工作
+      this.form = {
+        productId: null,
+        productSn: null,
+        productName: null,
+        price: null,
+        categoryId: null,
+      };
+    },
+    /** 新增按钮操作 */
+    handleAdd() {
+      this.resetForm();
+      this.open = true;
+      this.title = "添加数据";
+    },
     /** 修改按钮操作 */
-    handleUpdate(row) {},
+    handleUpdate(row) {
+      this.resetForm();
+      const productId = row.productId || this.ids;
+      getProduct(productId).then((response) => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改数据";
+      });
+    },
+    /** 提交按钮 */
+    submitForm: function () {
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          if (this.form.productId != null) {
+            addProduct(this.form).then((response) => {
+              this.$message.success(response.msg);
+              this.getList();
+              this.cancel();
+            });
+          } else {
+            addProduct(this.form).then((response) => {
+              this.$message.success(response.msg);
+              this.getList();
+              this.cancel();
+            });
+          }
+        }
+      });
+    },
+    /** 取消按钮 */
+    cancel() {
+      this.open = false;
+      this.title = "";
+      this.resetForm();
+    },
     /** 删除按钮操作 */
     handleDelete(row) {
       const productId = row.productId || this.ids;
@@ -223,6 +344,16 @@ export default {
     handleSelectionChange(selection) {
       this.ids = selection.map((item) => item.productId);
       this.single = selection.length !== 1;
+      this.multiple = !selection.length;
+    },
+    /** 处理分页 */
+    handleSizeChange(val) {
+      this.queryParams.pageSize = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      this.queryParams.pageNum = val;
+      this.getList();
     },
   },
 };

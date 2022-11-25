@@ -51,4 +51,10 @@ public class ProductServiceImpl implements IProductService {
     public int deleteProductById(Long productId) {
         return productMapper.deleteProductById(productId);
     }
+
+    @Override
+    public int deleteProductsByIds(Long[] productIds) {
+        return productMapper.deleteProductsByIds(productIds);
+    }
+
 }
