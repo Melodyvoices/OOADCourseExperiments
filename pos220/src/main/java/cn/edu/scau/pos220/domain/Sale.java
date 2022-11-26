@@ -1,12 +1,13 @@
 package cn.edu.scau.pos220.domain;
 
-import java.io.Serializable;
+import cn.edu.scau.pos220.core.domain.BaseEntity;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Sale implements Serializable {
+public class Sale extends BaseEntity {
     private Long saleId;
     private String saleNo;
     private BigDecimal total;
@@ -14,6 +15,8 @@ public class Sale implements Serializable {
     private String status;
     private List<SaleItem> saleItems = new ArrayList<>();
     private Payment payment;
+    private Long paymentId;
+    private String delFlag;
 
     // Setter和Getter
 
@@ -71,5 +74,21 @@ public class Sale implements Serializable {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
     }
 }

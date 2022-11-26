@@ -1,13 +1,12 @@
 package cn.edu.scau.pos220.domain;
 
 import cn.edu.scau.pos220.core.domain.BaseEntity;
-import org.springframework.stereotype.Component;
 
 /**
  * product category
  * standard POJO class
  */
-@Component
+
 public class Category extends BaseEntity {
     private Long categoryId;
     private String categoryName;

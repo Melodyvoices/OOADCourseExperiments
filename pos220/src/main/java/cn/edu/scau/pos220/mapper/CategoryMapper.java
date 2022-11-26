@@ -1,7 +1,6 @@
 package cn.edu.scau.pos220.mapper;
 
 import cn.edu.scau.pos220.domain.Category;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
