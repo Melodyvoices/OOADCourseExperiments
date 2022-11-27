@@ -49,7 +49,19 @@ const routes = [
       component: () => import('@/views/Product.vue'),
       meta: { title: '产品', access: 0, affix: true }
     }]
-  }
+  },
+  {
+    path: '/sale',
+    component: Layout,
+    redirect: '/sale/order',
+    meta: { title: '销售管理' },
+    children: [{
+      path: '/sale/order',
+      name: 'Sale',
+      component: () => import('@/views/Sale.vue'),
+      meta: { title: '订单', access: 0 }
+    }]
+  },
 ]
 const router = new VueRouter({
   mode: 'history',

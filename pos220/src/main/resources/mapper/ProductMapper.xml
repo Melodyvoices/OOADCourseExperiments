@@ -62,6 +62,19 @@
                  LEFT JOIN pos_category c ON p.category_id = c.category_id
         WHERE p.product_id = #{productId}
     </select>
+    <select id="getProductBySn" parameterType="String" resultMap="productResultMap">
+        SELECT p.product_id,
+               p.product_sn,
+               p.product_name,
+               p.price,
+               p.create_time,
+               p.category_id,
+               c.category_id,
+               c.category_name
+        FROM pos_product p
+                 LEFT JOIN pos_category c ON p.category_id = c.category_id
+        WHERE p.product_sn = #{productSn}
+    </select>
     <!-- 查询产品列表   -->
     <select id="selectProductList" parameterType="ProductDescription" resultMap="productResultMap">
         SELECT p.product_id,p.product_sn,p.product_name,p.price,p.create_time,p.category_id,
@@ -116,7 +129,7 @@
         from pos_product
         where product_id = #{productId}
     </delete>
-<!--    delete any products-->
+    <!--    delete any products-->
     <delete id="deleteProductsByIds" parameterType="String">
         DELETE FROM pos_product WHERE product_id IN
         <foreach item="productId" collection="array" open="(" separator="," close=")">

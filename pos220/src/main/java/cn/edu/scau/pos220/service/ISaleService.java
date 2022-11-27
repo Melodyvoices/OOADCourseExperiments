@@ -2,14 +2,17 @@ package cn.edu.scau.pos220.service;
 
 
 import cn.edu.scau.pos220.domain.ProductDescription;
+import cn.edu.scau.pos220.domain.Sale;
 
 import java.math.BigDecimal;
 
 public interface ISaleService {
     /**
      * 开始新的销售
+     *
+     * @return
      */
-    void makeNewSale();
+    Sale makeNewSale();
 
     /**
      * 实例化SaleItem
@@ -33,4 +36,8 @@ public interface ISaleService {
      * @return 找零
      */
     BigDecimal makePayment(BigDecimal cashTendered);
+
+    void changeQuantityOfSaleItem(String itemSn, int quantity);
+
+    void deleteSaleItem(String itemSn);
 }
